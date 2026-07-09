@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnakeX - Modern Snake Game</title>
+    <!-- Montserrat & Share Tech Mono Fonts for clean typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="./css/theme.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body class="theme-neon-dark">
+    <div id="app-container">
+        <!-- TOP HUD / HEADER -->
+        <header id="game-header">
+            <h1 class="logo">Snake<span class="logo-accent">X</span></h1>
+            
+            <div class="hud-stats">
+                <div class="hud-stat-box">
+                    <span class="stat-label">SCORE</span>
+                    <span id="hud-score" class="stat-value">000</span>
+                </div>
+                <div class="hud-stat-box">
+                    <span class="stat-label">HIGH SCORE</span>
+                    <span id="hud-highscore" class="stat-value">000</span>
+                </div>
+                <div class="hud-stat-box">
+                    <span class="stat-label">LEVEL</span>
+                    <span id="hud-level" class="stat-value">1</span>
+                </div>
+            </div>
+
+            <div class="header-controls">
+                <button id="btn-sound-toggle" class="icon-button" title="Toggle Sound">
+                    <svg id="svg-sound-on" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="currentColor" d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.85 14,18.71V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.77 16.5,12M3,9V15H7L12,20V4L7,9H3Z"/>
+                    </svg>
+                    <svg id="svg-sound-off" viewBox="0 0 24 24" width="24" height="24" class="hidden">
+                        <path fill="currentColor" d="M12,4L9.91,6.09L12,8.18M4.27,3L3,4.27L7.73,9H3V15H7L12,20V13.27L16.25,17.53C15.58,18.04 14.83,18.43 14,18.7V20.77C15.38,20.44 16.63,19.79 17.66,18.95L20.73,22L22,20.73L4.27,3M19,12C19,12.9 18.82,13.75 18.48,14.55L20,16.07C20.64,14.85 21,13.47 21,12C21,7.72 18,4.14 14,3.23V5.29C16.89,6.15 19,8.83 19,12M16.5,12C16.5,11.23 16.24,10.53 15.8,9.97L14,8.17V16L15.3,14.7C16.05,14 16.5,13.05 16.5,12Z"/>
+                    </svg>
+                </button>
+                <button id="btn-theme-cycle" class="icon-button" title="Change Theme">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="currentColor" d="M12,18C11.11,18 10.26,17.8 9.5,17.45C11.56,16.5 13,14.42 13,12C13,9.58 11.56,7.5 9.5,6.55C10.26,6.2 11.11,6 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31L23.31,12L20,8.69Z"/>
+                    </svg>
+                </button>
+                <button id="btn-pause" class="icon-button hidden" title="Pause Game (Space)">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="currentColor" d="M14,19H18V5H14M6,19H10V5H6V19Z"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN GAME CONTAINER (BOARD + SCREENS) -->
+        <main id="game-board-container">
+            <canvas id="game-canvas" width="600" height="600"></canvas>
+
+            <!-- START MENU OVERLAY -->
+            <div id="start-menu" class="screen-overlay active">
+                <div class="glass-panel">
+                    <h2 class="menu-title">Snake<span class="neon-text">X</span></h2>
+                    <p class="menu-subtitle">The Ultimate Neon Snake Experience</p>
+
+                    <!-- Difficulty Tabs -->
+                    <div class="settings-group">
+                        <label class="group-label">SELECT DIFFICULTY</label>
+                        <div class="difficulty-tabs">
+                            <button class="tab-button active" data-difficulty="easy">
+                                <span class="tab-title">EASY</span>
+                                <span class="tab-desc">No Wall Hits, Slow</span>
+                            </button>
+                            <button class="tab-button" data-difficulty="medium">
+                                <span class="tab-title">MEDIUM</span>
+                                <span class="tab-desc">Classic, Scaling Speed</span>
+                            </button>
+                            <button class="tab-button" data-difficulty="hard">
+                                <span class="tab-title">HARD</span>
+                                <span class="tab-desc">Obstacles & Fast Scaling</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Skin / Style Chooser -->
+                    <div class="settings-group">
+                        <label class="group-label">CHOOSE SNAKE SKIN</label>
+                        <div class="skin-selector">
+                            <button class="skin-option active" data-skin="green">
+                                <span class="skin-preview green-glow"></span>
+                                <span class="skin-name">Classic</span>
+                            </button>
+                            <button class="skin-option" data-skin="cyberpunk">
+                                <span class="skin-preview cyan-pink-glow"></span>
+                                <span class="skin-name">Cyberpunk</span>
+                            </button>
+                            <button class="skin-option" data-skin="rainbow">
+                                <span class="skin-preview rainbow-glow"></span>
+                                <span class="skin-name">Rainbow</span>
+                            </button>
+                            <button class="skin-option" data-skin="neon">
+                                <span class="skin-preview neon-glow-skin"></span>
+                                <span class="skin-name">Neon Glow</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Audio Config -->
+                    <div class="settings-group-row">
+                        <div class="settings-toggle">
+                            <label for="toggle-sfx">Sound FX</label>
+                            <div class="switch">
+                                <input type="checkbox" id="toggle-sfx" checked>
+                                <span class="slider"></span>
+                            </div>
+                        </div>
+                        <div class="settings-toggle">
+                            <label for="toggle-music">Music</label>
+                            <div class="switch">
+                                <input type="checkbox" id="toggle-music">
+                                <span class="slider"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="btn-start" class="action-button pulsing">PLAY GAME</button>
+                </div>
+            </div>
+
+            <!-- PAUSE OVERLAY -->
+            <div id="pause-screen" class="screen-overlay hidden">
+                <div class="glass-panel text-center">
+                    <h2 class="overlay-title pulsing">PAUSED</h2>
+                    <p class="overlay-desc">Press <span class="key-badge">SPACE</span> or tap here to resume</p>
+                    
+                    <div class="pause-options">
+                        <button id="btn-resume" class="action-button small">RESUME</button>
+                        <button id="btn-quit" class="action-button small secondary">QUIT TO MENU</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GAME OVER OVERLAY -->
+            <div id="game-over-screen" class="screen-overlay hidden">
+                <div class="glass-panel text-center">
+                    <h2 class="overlay-title game-over-text">GAME OVER</h2>
+                    <p id="game-over-reason" class="game-over-sub">You hit the wall!</p>
+
+                    <div class="results-box">
+                        <div class="result-row">
+                            <span>Final Score</span>
+                            <span id="final-score" class="result-value">0</span>
+                        </div>
+                        <div class="result-row">
+                            <span>High Score</span>
+                            <span id="final-highscore" class="result-value">0</span>
+                        </div>
+                        <div class="result-row">
+                            <span>Difficulty</span>
+                            <span id="final-difficulty" class="result-value">Medium</span>
+                        </div>
+                        <div class="new-highscore-badge hidden" id="badge-new-record">NEW HIGH SCORE!</div>
+                    </div>
+
+                    <div class="game-over-actions">
+                        <button id="btn-restart" class="action-button pulsing">PLAY AGAIN</button>
+                        <button id="btn-menu" class="action-button secondary">MAIN MENU</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- TOUCH CONTROLS FOR MOBILE -->
+        <div id="mobile-controls-panel" class="hidden">
+            <div class="dpad">
+                <button id="ctrl-up" class="dpad-btn up" aria-label="Up">▲</button>
+                <button id="ctrl-left" class="dpad-btn left" aria-label="Left">◀</button>
+                <button id="ctrl-right" class="dpad-btn right" aria-label="Right">▶</button>
+                <button id="ctrl-down" class="dpad-btn down" aria-label="Down">▼</button>
+                <div class="dpad-center"></div>
+            </div>
+        </div>
+
+        <!-- FOOTER & SHORTCUTS -->
+        <footer id="game-footer">
+            <div class="shortcuts">
+                <span><span class="key-badge">WASD</span> / <span class="key-badge">Arrows</span>: Move</span>
+                <span><span class="key-badge">Space</span>: Pause/Resume</span>
+                <span><span class="key-badge">Esc</span>: Quit</span>
+            </div>
+            <div class="copyright">
+                SnakeX &copy; 2026
+            </div>
+        </footer>
+    </div>
+
+    <!-- Main Entry Module -->
+    <script type="module" src="./js/main.js"></script>
+</body>
+</html>

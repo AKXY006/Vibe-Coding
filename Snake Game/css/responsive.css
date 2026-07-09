@@ -1,0 +1,206 @@
+/* Responsive styles for SnakeX */
+
+:root {
+    --board-size: 600px;
+}
+
+#game-board-container {
+    width: var(--board-size) !important;
+    height: var(--board-size) !important;
+}
+
+/* Medium Devices (Tablets, up to 768px) */
+@media (max-width: 768px) {
+    :root {
+        --board-size: 500px;
+    }
+    
+    #app-container {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .logo {
+        font-size: 1.6rem;
+    }
+
+    .hud-stat-box {
+        padding: 4px 10px;
+        min-width: 75px;
+    }
+
+    .stat-value {
+        font-size: 1.1rem;
+    }
+    
+    .glass-panel {
+        padding: 25px;
+    }
+
+    .menu-title {
+        font-size: 2.3rem;
+    }
+}
+
+/* Small Devices (Phones, up to 520px) */
+@media (max-width: 520px) {
+    :root {
+        --board-size: 340px;
+    }
+
+    #app-container {
+        gap: 8px;
+    }
+
+    #game-header {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .logo {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 2px;
+    }
+
+    .hud-stats {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .header-controls {
+        order: 2;
+    }
+
+    .glass-panel {
+        padding: 15px;
+        gap: 15px;
+        width: 92%;
+    }
+
+    .menu-title {
+        font-size: 1.8rem;
+    }
+
+    .menu-subtitle {
+        margin-top: -10px;
+        font-size: 0.75rem;
+    }
+
+    .settings-group {
+        gap: 6px;
+    }
+
+    .group-label {
+        font-size: 0.65rem;
+    }
+
+    .tab-title {
+        font-size: 0.7rem;
+    }
+
+    .tab-desc {
+        display: none; /* Hide descriptions to save space */
+    }
+
+    .skin-preview {
+        width: 15px;
+        height: 15px;
+    }
+
+    .skin-option {
+        font-size: 0.55rem;
+        padding: 6px 2px;
+    }
+
+    .settings-group-row {
+        gap: 10px;
+    }
+
+    .settings-toggle {
+        font-size: 0.75rem;
+        padding: 8px 10px;
+    }
+
+    .switch {
+        width: 38px;
+        height: 20px;
+    }
+
+    .slider:before {
+        height: 12px;
+        width: 12px;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(18px);
+    }
+
+    .action-button {
+        padding: 10px 20px;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+    }
+
+    .action-button.small {
+        padding: 8px 16px;
+        font-size: 0.75rem;
+    }
+
+    .overlay-title {
+        font-size: 1.8rem;
+    }
+
+    .results-box {
+        padding: 12px;
+        gap: 8px;
+    }
+
+    .result-row {
+        font-size: 0.8rem;
+    }
+
+    .result-value {
+        font-size: 0.95rem;
+    }
+
+    /* Show D-Pad for mobile devices when touch input is active */
+    body.is-touch-device #mobile-controls-panel {
+        display: flex !important;
+    }
+
+    #game-footer {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .shortcuts {
+        display: none; /* Hide keyboard shortcuts on mobile */
+    }
+}
+
+/* Very Small Devices (e.g. iPhone SE, up to 360px) */
+@media (max-width: 360px) {
+    :root {
+        --board-size: 290px;
+    }
+
+    .dpad {
+        width: 120px;
+        height: 120px;
+    }
+
+    .dpad-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+
+    .dpad-btn.up { top: 3px; left: 41px; }
+    .dpad-btn.left { top: 41px; left: 3px; }
+    .dpad-btn.right { top: 41px; right: 3px; }
+    .dpad-btn.down { bottom: 3px; left: 41px; }
+}

@@ -1,0 +1,82 @@
+/* CSS variables for SnakeX Themes */
+
+/* 1. Neon Dark Cyberpunk (Default) */
+.theme-neon-dark {
+    --bg-gradient: radial-gradient(circle at center, #0d0f1a 0%, #05060b 100%);
+    --bg-color: #05060b;
+    --canvas-bg: rgba(10, 12, 22, 0.9);
+    --grid-color: rgba(0, 242, 254, 0.05);
+    --grid-border: rgba(0, 242, 254, 0.15);
+    
+    --primary-neon: #00f2fe;
+    --primary-neon-glow: 0 0 10px rgba(0, 242, 254, 0.6), 0 0 20px rgba(0, 242, 254, 0.3);
+    --secondary-neon: #ff007f;
+    --secondary-neon-glow: 0 0 10px rgba(ff, 0, 127, 0.6), 0 0 20px rgba(255, 0, 127, 0.3);
+    --accent-neon: #ffd700; /* Golden apple */
+    --accent-neon-glow: 0 0 10px rgba(255, 215, 0, 0.7);
+
+    --text-color: #ffffff;
+    --text-muted: #8a8fa3;
+    --panel-bg: rgba(15, 18, 36, 0.6);
+    --panel-border: rgba(255, 255, 255, 0.08);
+    --panel-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --glass-blur: blur(12px);
+
+    --dpad-bg: rgba(20, 24, 46, 0.7);
+    --dpad-btn-bg: rgba(0, 242, 254, 0.1);
+    --dpad-btn-border: rgba(0, 242, 254, 0.3);
+}
+
+/* 2. Frosted Light Mode */
+.theme-light {
+    --bg-gradient: radial-gradient(circle at center, #f4f6fa 0%, #e2e8f0 100%);
+    --bg-color: #e2e8f0;
+    --canvas-bg: rgba(255, 255, 255, 0.95);
+    --grid-color: rgba(59, 130, 246, 0.04);
+    --grid-border: rgba(59, 130, 246, 0.12);
+
+    --primary-neon: #3b82f6;
+    --primary-neon-glow: 0 0 8px rgba(59, 130, 246, 0.3);
+    --secondary-neon: #ec4899;
+    --secondary-neon-glow: 0 0 8px rgba(236, 72, 153, 0.3);
+    --accent-neon: #f59e0b;
+    --accent-neon-glow: 0 0 8px rgba(245, 158, 11, 0.5);
+
+    --text-color: #1e293b;
+    --text-muted: #64748b;
+    --panel-bg: rgba(255, 255, 255, 0.7);
+    --panel-border: rgba(255, 255, 255, 0.5);
+    --panel-glow: 0 8px 32px 0 rgba(148, 163, 184, 0.15);
+    --glass-blur: blur(12px);
+
+    --dpad-bg: rgba(255, 255, 255, 0.8);
+    --dpad-btn-bg: rgba(59, 130, 246, 0.08);
+    --dpad-btn-border: rgba(59, 130, 246, 0.2);
+}
+
+/* 3. Retro Arcade Mode */
+.theme-retro-arcade {
+    --bg-gradient: none;
+    --bg-color: #000000;
+    --canvas-bg: #000000;
+    --grid-color: rgba(0, 255, 0, 0.05);
+    --grid-border: #00ff00;
+
+    --primary-neon: #39ff14; /* Classic Retro Lime Green */
+    --primary-neon-glow: 0 0 5px #39ff14;
+    --secondary-neon: #ff5555;
+    --secondary-neon-glow: 0 0 5px #ff5555;
+    --accent-neon: #ffff55;
+    --accent-neon-glow: 0 0 5px #ffff55;
+
+    --text-color: #00ff00;
+    --text-muted: #007700;
+    --panel-bg: #000000;
+    --panel-border: #00ff00;
+    --panel-glow: none;
+    --glass-blur: none;
+
+    --dpad-bg: #000000;
+    --dpad-btn-bg: #000000;
+    --dpad-btn-border: #00ff00;
+}
