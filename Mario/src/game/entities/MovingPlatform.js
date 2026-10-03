@@ -19,20 +19,20 @@ export default class MovingPlatform extends Phaser.Physics.Arcade.Sprite {
     // Setup bounds
     this.startX = x;
     this.startY = y;
-    this.range = (config.range || 4) * 16; // Range in pixels
+    this.range = (config.range || 4) * 32; // Range in pixels (32px tiles)
     this.speed = config.speed || 1.2;
     this.axis = config.axis || 'x'; // 'x' for horizontal, 'y' for vertical
 
-    // Set initial velocities
+    // Set initial velocities (doubled for 640x480 resolution)
     if (this.axis === 'x') {
-      this.setVelocityX(this.speed * 40);
+      this.setVelocityX(this.speed * 80);
     } else {
-      this.setVelocityY(this.speed * 40);
+      this.setVelocityY(this.speed * 80);
     }
 
-    // Set custom display size (3 tiles wide platform: 48px width, 16px height)
-    this.setDisplaySize(48, 16);
-    this.body.setSize(48, 16);
+    // Set custom display size (3 tiles wide platform: 96px width, 32px height)
+    this.setDisplaySize(96, 32);
+    this.body.setSize(96, 32);
   }
 
   update() {
@@ -42,9 +42,9 @@ export default class MovingPlatform extends Phaser.Physics.Arcade.Sprite {
       if (distance >= this.range) {
         // Reverse direction
         if (this.x > this.startX) {
-          this.setVelocityX(-this.speed * 40);
+          this.setVelocityX(-this.speed * 80);
         } else {
-          this.setVelocityX(this.speed * 40);
+          this.setVelocityX(this.speed * 80);
         }
       }
     } 
@@ -54,9 +54,9 @@ export default class MovingPlatform extends Phaser.Physics.Arcade.Sprite {
       if (distance >= this.range) {
         // Reverse direction
         if (this.y > this.startY) {
-          this.setVelocityY(-this.speed * 40);
+          this.setVelocityY(-this.speed * 80);
         } else {
-          this.setVelocityY(this.speed * 40);
+          this.setVelocityY(this.speed * 80);
         }
       }
     }

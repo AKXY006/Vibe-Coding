@@ -42,6 +42,7 @@ const GameContainer = ({
     // 1. Initialize Phaser Game instance
     const game = StartGame('game-canvas-parent');
     gameRef.current = game;
+    window.game = game;
 
     // Wait for the Phaser canvas to load and then start the level
     game.events.once('ready', () => {
@@ -95,6 +96,7 @@ const GameContainer = ({
       EventBus.off('boss-hit', bossHitHandler);
       EventBus.off('boss-defeated', bossDefeatedHandler);
 
+      window.game = null;
       if (gameRef.current) {
         gameRef.current.destroy(true);
         gameRef.current = null;

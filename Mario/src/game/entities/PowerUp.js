@@ -27,7 +27,7 @@ export default class PowerUp extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
 
     if (this.powerUpType === 'coin') {
-      this.body.setSize(10, 12).setOffset(3, 2);
+      this.body.setSize(20, 24).setOffset(6, 4);
       
       if (this.isStatic) {
         // Normal coin floating in the sky
@@ -42,22 +42,22 @@ export default class PowerUp extends Phaser.Physics.Arcade.Sprite {
       }
     } else {
       // Mushroom, Star, 1UP behaviors
-      this.body.setSize(12, 12).setOffset(2, 4);
+      this.body.setSize(24, 24).setOffset(4, 8);
       
       if (!this.isStatic) {
         // Emerging animation (slides up slowly from inside question block)
         this.body.setEnable(false); // disable physics initially
-        this.y += 8; // start slightly lower inside block
+        this.y += 16; // start slightly lower inside block
         
         scene.tweens.add({
           targets: this,
-          y: this.y - 20, // Slide up out of block
+          y: this.y - 40, // Slide up out of block
           duration: 400,
           onComplete: () => {
             if (this.active) {
                this.body.setEnable(true); // turn on physics
                this.body.setGravityY(scene.levelConfig.gravityY);
-               this.setVelocityX(60); // start walking right
+               this.setVelocityX(120); // start walking right
             }
           }
         });
@@ -74,9 +74,9 @@ export default class PowerUp extends Phaser.Physics.Arcade.Sprite {
     if (this.powerUpType === 'mushroom' || this.powerUpType === 'life') {
       // Bounce off walls
       if (this.body.blocked.left) {
-        this.setVelocityX(60);
+        this.setVelocityX(120);
       } else if (this.body.blocked.right) {
-        this.setVelocityX(-60);
+        this.setVelocityX(-120);
       }
     }
 
@@ -84,14 +84,14 @@ export default class PowerUp extends Phaser.Physics.Arcade.Sprite {
     else if (this.powerUpType === 'star') {
       // Star bouncing effect when hit ground
       if (this.body.blocked.down || this.body.touching.down) {
-        this.setVelocityY(-160);
+        this.setVelocityY(-320);
       }
       
       // Bounce off walls
       if (this.body.blocked.left) {
-        this.setVelocityX(65);
+        this.setVelocityX(130);
       } else if (this.body.blocked.right) {
-        this.setVelocityX(-65);
+        this.setVelocityX(-130);
       }
     }
   }
@@ -107,7 +107,7 @@ export default class PowerUp extends Phaser.Physics.Arcade.Sprite {
     // Eject animation
     this.scene.tweens.add({
       targets: this,
-      y: this.y - 24,
+      y: this.y - 48,
       scaleX: 1.2,
       scaleY: 1.2,
       duration: 180,

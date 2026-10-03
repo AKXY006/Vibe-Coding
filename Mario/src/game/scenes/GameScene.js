@@ -44,12 +44,12 @@ export default class GameScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor(this.levelConfig.bg);
 
     // Set camera limits
-    this.physics.world.setBounds(0, 0, this.levelConfig.width * 16, this.levelConfig.height * 16);
-    this.cameras.main.setBounds(0, 0, this.levelConfig.width * 16, this.levelConfig.height * 16);
+    this.physics.world.setBounds(0, 0, this.levelConfig.width * 32, this.levelConfig.height * 32);
+    this.cameras.main.setBounds(0, 0, this.levelConfig.width * 32, this.levelConfig.height * 32);
 
     // 2. Instantiate Player (Spawn at checkpoint if cached, else start of level)
-    let spawnX = 40;
-    let spawnY = 150;
+    let spawnX = 80;
+    let spawnY = 300;
     if (globalCheckpoint.level === this.currentLevel && globalCheckpoint.x !== null) {
       spawnX = globalCheckpoint.x;
       spawnY = globalCheckpoint.y;
@@ -57,7 +57,7 @@ export default class GameScene extends Phaser.Scene {
     this.player = new Player(this, spawnX, spawnY);
 
     // Camera follow player
-    this.cameras.main.startFollow(this.player, true, 0.1, 0.1, -40, 40);
+    this.cameras.main.startFollow(this.player, true, 0.1, 0.1, -80, 80);
 
     // 3. Setup Groups for Entities
     this.enemiesGroup = this.physics.add.group({ runChildUpdate: true });
@@ -67,13 +67,13 @@ export default class GameScene extends Phaser.Scene {
 
     // Spawn level enemies
     this.levelConfig.enemies.forEach(enemyConfig => {
-      const enemy = new Enemy(this, enemyConfig.x * 16 + 8, enemyConfig.y * 16 + 8, enemyConfig.type);
+      const enemy = new Enemy(this, enemyConfig.x * 32 + 16, enemyConfig.y * 32 + 16, enemyConfig.type);
       this.enemiesGroup.add(enemy);
     });
 
     // Spawn moving platforms
     this.levelConfig.movingPlatforms.forEach(platConfig => {
-      const platform = new MovingPlatform(this, platConfig.x * 16 + 24, platConfig.y * 16 + 8, platConfig);
+      const platform = new MovingPlatform(this, platConfig.x * 32 + 48, platConfig.y * 32 + 16, platConfig);
       this.movingPlatformsGroup.add(platform);
     });
 
@@ -82,7 +82,7 @@ export default class GameScene extends Phaser.Scene {
       // If there is solid ground and it's not a hole, add a floating coin
       const isHole = this.levelConfig.holes.some(h => x >= h.xStart && x < h.xStart + h.width);
       if (!isHole && x % 3 === 0) {
-        const coin = new PowerUp(this, x * 16 + 8, 8 * 16, 'coin', true);
+        const coin = new PowerUp(this, x * 32 + 16, 8 * 32, 'coin', true);
         this.coinsGroup.add(coin);
       }
     }
@@ -182,7 +182,7 @@ export default class GameScene extends Phaser.Scene {
       const originalY = block.y;
       this.tweens.add({
         targets: block,
-        y: originalY - 6,
+        y: originalY - 12,
         duration: 100,
         yoyo: true,
         onComplete: () => {
@@ -197,7 +197,7 @@ export default class GameScene extends Phaser.Scene {
       const itemType = block.getData('item');
       if (itemType !== 'none') {
         const itemX = block.x;
-        const itemY = block.y - 8;
+        const itemY = block.y - 16;
 
         if (itemType === 'coin') {
           // Coins bounce and self destruct instantly
@@ -225,11 +225,11 @@ export default class GameScene extends Phaser.Scene {
     if (enemy.isDead || player.isDead) return;
 
     // Check if player jumped on enemy head (falling downwards onto enemy)
-    const fallingOnEnemy = player.body.velocity.y > 0 && (player.body.bottom <= enemy.body.top + 6);
+    const fallingOnEnemy = player.body.velocity.y > 0 && (player.body.bottom <= enemy.body.top + 12);
 
     if (fallingOnEnemy) {
       // Bounce player back up
-      player.setVelocityY(-200);
+      player.setVelocityY(-350);
       
       if (enemy.enemyType === 'boss') {
         enemy.hitBoss();
@@ -392,8 +392,8 @@ export default class GameScene extends Phaser.Scene {
       const shard = this.add.sprite(x, y, 'particles');
       this.physics.add.existing(shard);
       shard.body.setVelocity(
-        (i % 2 === 0 ? -120 : 120) * (Math.random() * 0.5 + 0.5),
-        (i < 2 ? -250 : -120)
+        (i % 2 === 0 ? -240 : 240) * (Math.random() * 0.5 + 0.5),
+        (i < 2 ? -500 : -240)
       );
       shard.body.setGravityY(this.levelConfig.gravityY);
       
@@ -418,7 +418,7 @@ export default class GameScene extends Phaser.Scene {
 
     this.tweens.add({
       targets: txt,
-      y: y - 16,
+      y: y - 32,
       alpha: 0,
       duration: 800,
       onComplete: () => txt.destroy()
