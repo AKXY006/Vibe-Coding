@@ -29,8 +29,15 @@ public class OrderController {
     private UserService userService;
 
     private Long getUserIdFromAuth(Authentication authentication) {
-        UserResponse user = userService.getUserByEmail(authentication.getName());
-        return user.getId();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+        try {
+            UserResponse user = userService.getUserByEmail(authentication.getName());
+            return user.getId();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @PostMapping("/create")
@@ -59,6 +66,9 @@ public class OrderController {
     @GetMapping("/my-orders")
     public ResponseEntity<ApiResponse<List<OrderResponse>>> getMyOrders(Authentication authentication) {
         Long userId = getUserIdFromAuth(authentication);
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error("Please login to view orders"));
+        }
         List<OrderResponse> orders = orderService.getOrdersByUserId(userId);
         return ResponseEntity.ok(ApiResponse.success(orders));
     }

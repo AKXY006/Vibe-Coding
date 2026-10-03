@@ -1,7 +1,8 @@
 // src/pages/Contact.jsx
 import React, { useState } from 'react';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, Navigation, HelpCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, Navigation, HelpCircle, Loader2 } from 'lucide-react';
 import { RESTAURANT_INFO } from '../data/foodData';
+import { sendContactMessage } from '../services/contactService';
 import { useToast } from '../context/ToastContext';
 import './Contact.css';
 
@@ -24,7 +25,7 @@ const Contact = () => {
     setForm((p) => ({ ...p, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
       showToast('Please fill in your name, email and message.', 'error');
@@ -32,10 +33,10 @@ const Contact = () => {
     }
 
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
+    try {
+      await sendContactMessage(form);
       setSubmitted(true);
-      showToast('Your message has been sent successfully!', 'success');
+      showToast('Your message has been sent to our guest relations team!', 'success');
       setForm({
         name: '',
         email: '',
@@ -43,7 +44,11 @@ const Contact = () => {
         subject: 'General Inquiry',
         message: ''
       });
-    }, 400);
+    } catch (err) {
+      showToast('Failed to send message. Please try again.', 'error');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -133,7 +138,7 @@ const Contact = () => {
                   </div>
                   <h3 style={{ fontSize: '1.4rem', marginBottom: '0.5rem' }}>Message Received!</h3>
                   <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.95rem' }}>
-                    Thank you for reaching out. We have logged your request and our team will get back to you shortly.
+                    Thank you for reaching out. We have logged your request in our system and our team will get back to you shortly.
                   </p>
                   <button
                     type="button"
@@ -223,15 +228,24 @@ const Contact = () => {
                     className="btn btn-primary btn-lg"
                     disabled={submitting}
                   >
-                    <Send size={18} />
-                    <span>{submitting ? 'Sending Message...' : 'Send Message'}</span>
+                    {submitting ? (
+                      <>
+                        <Loader2 size={18} className="animate-spin" />
+                        <span>Sending to Server...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send size={18} />
+                        <span>Send Message</span>
+                      </>
+                    )}
                   </button>
                 </form>
               )}
             </div>
           </div>
 
-          {/* Interactive Simulated Map Card */}
+          {/* Interactive Map Card */}
           <div className="map-simulation-card">
             <div className="map-mockup-frame">
               <div className="map-grid-pattern" />

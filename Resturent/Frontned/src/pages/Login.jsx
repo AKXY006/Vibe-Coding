@@ -1,7 +1,7 @@
 // src/pages/Login.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Utensils, Eye, EyeOff, LogIn, ArrowRight } from 'lucide-react';
+import { Utensils, Eye, EyeOff, LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import './Auth.css';
@@ -15,6 +15,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validate = () => {
     const errs = {};
@@ -34,19 +35,32 @@ const Login = () => {
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
-    login(email, password);
-    navigate('/');
+    setIsSubmitting(true);
+    try {
+      await login(email, password);
+      navigate('/');
+    } catch (err) {
+      // Error is toasted in AuthContext
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleDemoFill = () => {
-    setEmail('gourmet.diner@savoria.com');
-    setPassword('Savoria123');
+  const handleDemoFill = (role = 'USER') => {
+    if (role === 'ADMIN') {
+      setEmail('admin@restaurant.com');
+      setPassword('admin123');
+      showToast('Admin credentials filled!', 'info');
+    } else {
+      setEmail('user@restaurant.com');
+      setPassword('user123');
+      showToast('Customer credentials filled!', 'info');
+    }
     setErrors({});
-    showToast('Demo credentials filled!', 'info');
   };
 
   return (
@@ -68,7 +82,7 @@ const Login = () => {
               type="email"
               id="login-email"
               className="form-input"
-              placeholder="e.g. alexander@example.com"
+              placeholder="e.g. user@restaurant.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -100,18 +114,34 @@ const Login = () => {
             {errors.password && <div className="auth-error-msg">{errors.password}</div>}
           </div>
 
-          {/* Demo Quick Fill */}
-          <button
-            type="button"
-            className="demo-fill-btn"
-            onClick={handleDemoFill}
-          >
-            ⚡ Click here to quick-fill demo account
-          </button>
+          {/* Demo Quick Fill Buttons */}
+          <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
+            <button
+              type="button"
+              className="demo-fill-btn"
+              style={{ flex: 1, padding: '0.4rem', fontSize: '0.78rem' }}
+              onClick={() => handleDemoFill('USER')}
+            >
+              ⚡ Customer Login
+            </button>
+            <button
+              type="button"
+              className="demo-fill-btn"
+              style={{ flex: 1, padding: '0.4rem', fontSize: '0.78rem', background: '#e0f2fe', color: '#0369a1', borderColor: '#bae6fd' }}
+              onClick={() => handleDemoFill('ADMIN')}
+            >
+              👑 Admin Login
+            </button>
+          </div>
 
-          <button type="submit" className="btn btn-primary btn-full btn-lg" style={{ marginTop: '0.5rem' }}>
+          <button
+            type="submit"
+            className="btn btn-primary btn-full btn-lg"
+            style={{ marginTop: '0.5rem' }}
+            disabled={isSubmitting}
+          >
             <LogIn size={18} />
-            <span>Sign In</span>
+            <span>{isSubmitting ? 'Signing In...' : 'Sign In'}</span>
           </button>
         </form>
 

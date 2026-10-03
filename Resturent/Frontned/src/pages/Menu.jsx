@@ -1,66 +1,69 @@
 // src/pages/Menu.jsx
-import React, { useState, useMemo } from 'react';
-import { Search, RotateCcw, Utensils, SlidersHorizontal } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Search, RotateCcw, Utensils, Loader2 } from 'lucide-react';
 import CategoryFilter from '../components/CategoryFilter';
 import FoodCard from '../components/FoodCard';
-import { foodItems } from '../data/foodData';
+import { getFoods } from '../services/foodService';
 import './Menu.css';
 
 const Menu = () => {
+  const [dishes, setDishes] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('default'); // 'default', 'price-low', 'price-high', 'rating'
-  const [dietaryFilter, setDietaryFilter] = useState('ALL'); // 'ALL', 'VEG', 'SPECIAL'
+  const [sortBy, setSortBy] = useState('default');
+  const [dietaryFilter, setDietaryFilter] = useState('ALL');
 
-  // Calculate category counts
+  // Fetch foods from Spring Boot REST API
+  useEffect(() => {
+    let isMounted = true;
+    const fetchMenu = async () => {
+      setLoading(true);
+      try {
+        const data = await getFoods({
+          category: selectedCategory,
+          search: searchQuery,
+          sortBy,
+        });
+        if (isMounted) {
+          setDishes(data);
+        }
+      } catch (err) {
+        console.warn('Failed to load dishes from API:', err);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchMenu();
+    return () => {
+      isMounted = false;
+    };
+  }, [selectedCategory, searchQuery, sortBy]);
+
+  // Compute category counts
   const categoryCounts = useMemo(() => {
-    const counts = { all: foodItems.length };
-    foodItems.forEach((item) => {
+    const counts = { all: dishes.length };
+    dishes.forEach((item) => {
       counts[item.category] = (counts[item.category] || 0) + 1;
     });
     return counts;
-  }, []);
+  }, [dishes]);
 
-  // Filter & Sort logic
+  // Client-side dietary filter
   const filteredDishes = useMemo(() => {
-    let result = [...foodItems];
+    let result = [...dishes];
 
-    // 1. Category filter
-    if (selectedCategory !== 'All') {
-      result = result.filter(
-        (item) => item.category.toLowerCase() === selectedCategory.toLowerCase()
-      );
-    }
-
-    // 2. Search query filter (search by dish name, description or ingredient)
-    if (searchQuery.trim() !== '') {
-      const q = searchQuery.toLowerCase().trim();
-      result = result.filter(
-        (item) =>
-          item.name.toLowerCase().includes(q) ||
-          item.description.toLowerCase().includes(q) ||
-          item.ingredients.some((ing) => ing.toLowerCase().includes(q))
-      );
-    }
-
-    // 3. Dietary filter
     if (dietaryFilter === 'VEG') {
       result = result.filter((item) => item.isVeg);
     } else if (dietaryFilter === 'SPECIAL') {
       result = result.filter((item) => item.isChefSpecial);
     }
 
-    // 4. Sorting
-    if (sortBy === 'price-low') {
-      result.sort((a, b) => a.price - b.price);
-    } else if (sortBy === 'price-high') {
-      result.sort((a, b) => b.price - a.price);
-    } else if (sortBy === 'rating') {
-      result.sort((a, b) => b.rating - a.rating);
-    }
-
     return result;
-  }, [selectedCategory, searchQuery, sortBy, dietaryFilter]);
+  }, [dishes, dietaryFilter]);
 
   const handleResetFilters = () => {
     setSelectedCategory('All');
@@ -77,7 +80,7 @@ const Menu = () => {
           <span className="section-badge">Gastronomic Collection</span>
           <h1 className="menu-hero-title">Our Culinary Menu</h1>
           <p className="menu-hero-desc">
-            Explore our curated 20-course portfolio spanning authentic Italian starters, woodfired sourdough pizzas, hand-rolled pastas, artisanal mains, and botanical mixology.
+            Explore our curated selection spanning authentic Italian starters, woodfired sourdough pizzas, hand-rolled pastas, artisanal mains, and botanical mixology powered live by our Spring Boot database.
           </p>
         </div>
       </section>
@@ -100,7 +103,7 @@ const Menu = () => {
               <Search size={18} className="menu-search-icon" />
               <input
                 type="text"
-                placeholder="Search dishes or ingredients (e.g. Truffle, Lobster, Ribeye)..."
+                placeholder="Search dishes or ingredients (e.g. Truffle, Wings, Salmon)..."
                 className="menu-search-input"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -155,7 +158,12 @@ const Menu = () => {
 
       {/* Food Cards Grid */}
       <div className="container">
-        {filteredDishes.length > 0 ? (
+        {loading ? (
+          <div style={{ padding: '6rem 0', textAlign: 'center', color: 'var(--text-muted)' }}>
+            <Loader2 size={36} className="animate-spin" style={{ margin: '0 auto 1rem auto', color: 'var(--primary)' }} />
+            <p>Loading dishes from kitchen server...</p>
+          </div>
+        ) : filteredDishes.length > 0 ? (
           <>
             <div style={{ marginBottom: '1.25rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
               Showing <strong>{filteredDishes.length}</strong> delicious {filteredDishes.length === 1 ? 'dish' : 'dishes'}

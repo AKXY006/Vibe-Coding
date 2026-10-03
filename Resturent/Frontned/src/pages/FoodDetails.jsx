@@ -1,10 +1,10 @@
 // src/pages/FoodDetails.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Plus, Minus, ShoppingBag, ArrowLeft, Clock, Flame, ShieldAlert, Check } from 'lucide-react';
+import { Plus, Minus, ShoppingBag, ArrowLeft, ShieldAlert, Check, Loader2 } from 'lucide-react';
 import RatingStars from '../components/RatingStars';
 import FoodCard from '../components/FoodCard';
-import { foodItems } from '../data/foodData';
+import { getFoodById, getFoods } from '../services/foodService';
 import { useCart } from '../context/CartContext';
 import { handleImageError } from '../assets/images';
 import './FoodDetails.css';
@@ -14,17 +14,56 @@ const FoodDetails = () => {
   const navigate = useNavigate();
   const { addToCart, getItemQuantity } = useCart();
 
+  const [dish, setDish] = useState(null);
+  const [relatedDishes, setRelatedDishes] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [justAdded, setJustAdded] = useState(false);
 
-  // Find dish by ID
-  const dish = foodItems.find((item) => item.id === Number(id));
-
-  // Reset quantity when id changes
+  // Load dish from Spring Boot API
   useEffect(() => {
-    setQuantity(1);
-    setJustAdded(false);
+    let isMounted = true;
+    const fetchDishDetails = async () => {
+      setLoading(true);
+      try {
+        const item = await getFoodById(id);
+        if (isMounted) {
+          setDish(item);
+          // Fetch related items from the same category
+          if (item && item.category) {
+            const allCategoryDishes = await getFoods({ category: item.category });
+            if (isMounted) {
+              setRelatedDishes(
+                allCategoryDishes.filter((r) => r.id !== item.id).slice(0, 3)
+              );
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to load dish details from server:', err);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+          setQuantity(1);
+          setJustAdded(false);
+        }
+      }
+    };
+
+    fetchDishDetails();
+    return () => {
+      isMounted = false;
+    };
   }, [id]);
+
+  if (loading) {
+    return (
+      <div className="container" style={{ padding: '8rem 1.5rem', textAlign: 'center' }}>
+        <Loader2 size={36} className="animate-spin" style={{ margin: '0 auto 1rem auto', color: 'var(--primary)' }} />
+        <p style={{ color: 'var(--text-muted)' }}>Retrieving culinary details from kitchen server...</p>
+      </div>
+    );
+  }
 
   if (!dish) {
     return (
@@ -40,11 +79,6 @@ const FoodDetails = () => {
       </div>
     );
   }
-
-  // Related dishes from same category, excluding current
-  const relatedDishes = foodItems
-    .filter((item) => item.category === dish.category && item.id !== dish.id)
-    .slice(0, 3);
 
   const handleAddToCart = () => {
     addToCart(dish, quantity);
@@ -126,14 +160,18 @@ const FoodDetails = () => {
             </div>
 
             {/* Ingredients */}
-            <h3 className="details-section-heading">Key Ingredients</h3>
-            <div className="ingredients-pills">
-              {dish.ingredients.map((ing, i) => (
-                <span key={i} className="ingredient-pill">
-                  {ing}
-                </span>
-              ))}
-            </div>
+            {dish.ingredients && (
+              <>
+                <h3 className="details-section-heading">Key Ingredients</h3>
+                <div className="ingredients-pills">
+                  {dish.ingredients.map((ing, i) => (
+                    <span key={i} className="ingredient-pill">
+                      {ing}
+                    </span>
+                  ))}
+                </div>
+              </>
+            )}
 
             {/* Nutrition Facts */}
             {dish.nutrition && (

@@ -15,6 +15,7 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validate = () => {
     const errs = {};
@@ -42,12 +43,19 @@ const Register = () => {
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
-    register(name, email, password);
-    navigate('/');
+    setIsSubmitting(true);
+    try {
+      await register(name, email, password);
+      navigate('/');
+    } catch (err) {
+      // Handled and toasted in AuthContext
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -131,9 +139,14 @@ const Register = () => {
             )}
           </div>
 
-          <button type="submit" className="btn btn-primary btn-full btn-lg" style={{ marginTop: '0.5rem' }}>
+          <button
+            type="submit"
+            className="btn btn-primary btn-full btn-lg"
+            style={{ marginTop: '0.5rem' }}
+            disabled={isSubmitting}
+          >
             <UserPlus size={18} />
-            <span>Create Account</span>
+            <span>{isSubmitting ? 'Creating Account...' : 'Create Account'}</span>
           </button>
         </form>
 

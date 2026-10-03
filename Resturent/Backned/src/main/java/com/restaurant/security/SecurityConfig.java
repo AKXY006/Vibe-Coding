@@ -68,12 +68,14 @@ public class SecurityConfig {
             .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // Public endpoints
+                // Public endpoints for React Frontend
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/foods/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/reservations/book").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/contact/send").permitAll()
-                // Error & Swagger / OpenAPI if used
+                .requestMatchers(HttpMethod.POST, "/api/orders/create").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                // Error & Swagger / OpenAPI
                 .requestMatchers("/error", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                 // Admin endpoints
                 .requestMatchers(HttpMethod.POST, "/api/foods/**").hasAuthority("ROLE_ADMIN")
@@ -93,11 +95,11 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173", "*"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173", "*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept", "X-Requested-With", "Origin"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept", "X-Requested-With", "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers"));
         configuration.setExposedHeaders(List.of("Authorization"));
-        configuration.setAllowCredentials(false); // set to false when wildcard origin is allowed
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

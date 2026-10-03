@@ -1,5 +1,5 @@
 // src/pages/Home.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -15,7 +15,8 @@ import {
 } from 'lucide-react';
 import FoodCard from '../components/FoodCard';
 import RatingStars from '../components/RatingStars';
-import { foodItems, SPECIAL_OFFERS, TESTIMONIALS } from '../data/foodData';
+import { SPECIAL_OFFERS, TESTIMONIALS } from '../data/foodData';
+import { getPopularDishes } from '../services/foodService';
 import { handleImageError } from '../assets/images';
 import { useToast } from '../context/ToastContext';
 import './Home.css';
@@ -23,9 +24,27 @@ import './Home.css';
 const Home = () => {
   const { showToast } = useToast();
   const [copiedCode, setCopiedCode] = useState(null);
+  const [popularDishes, setPopularDishes] = useState([]);
 
-  // Filter popular dishes for homepage preview (top 6)
-  const popularDishes = foodItems.filter((item) => item.isPopular).slice(0, 6);
+  // Fetch live popular dishes from Spring Boot API
+  useEffect(() => {
+    let isMounted = true;
+    const fetchPopular = async () => {
+      try {
+        const dishes = await getPopularDishes(6);
+        if (isMounted) {
+          setPopularDishes(dishes);
+        }
+      } catch (err) {
+        console.warn('Failed to fetch popular dishes:', err);
+      }
+    };
+
+    fetchPopular();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleCopyCode = (code) => {
     navigator.clipboard.writeText(code);
@@ -208,7 +227,7 @@ const Home = () => {
 
           <div style={{ textAlign: 'center' }}>
             <Link to="/menu" className="btn btn-secondary btn-lg">
-              <span>View Full 20-Item Menu</span>
+              <span>View Full Menu</span>
               <ArrowRight size={18} />
             </Link>
           </div>
