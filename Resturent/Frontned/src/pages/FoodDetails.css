@@ -1,0 +1,275 @@
+/* src/pages/FoodDetails.css */
+
+.food-details-page {
+  padding: 2.5rem 0 5rem 0;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.breadcrumb a:hover {
+  color: var(--primary);
+}
+
+.breadcrumb-separator {
+  color: var(--text-light);
+}
+
+.breadcrumb-active {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Main Details Grid */
+.food-details-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 3.5rem;
+  align-items: start;
+  margin-bottom: 5rem;
+}
+
+@media (max-width: 992px) {
+  .food-details-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+/* Image Visual Showcase */
+.details-image-card {
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border-light);
+  background-color: var(--dark-bg);
+}
+
+.details-main-image {
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.details-image-card:hover .details-main-image {
+  transform: scale(1.03);
+}
+
+.details-badges-float {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+/* Info Column */
+.details-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.details-category-tag {
+  color: var(--primary);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.details-title {
+  font-size: 2.75rem;
+  font-family: var(--font-serif);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 640px) {
+  .details-title {
+    font-size: 2.1rem;
+  }
+  .details-main-image {
+    height: 340px;
+  }
+}
+
+.details-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 1.5rem;
+}
+
+.details-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.details-price {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--primary);
+  font-family: var(--font-serif);
+}
+
+.details-tax-hint {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.details-description {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+/* Quick specs strip */
+.details-specs-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  background-color: var(--bg-subtle);
+  padding: 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  margin-bottom: 2rem;
+}
+
+.details-spec-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.details-spec-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.details-spec-val {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 2px;
+}
+
+/* Ingredients */
+.details-section-heading {
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.ingredients-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.ingredient-pill {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* Nutrition Box */
+.nutrition-grid {
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  background-color: #ffffff;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.nutrition-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.nutrition-val {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.nutrition-key {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Action Area */
+.details-actions-bar {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.details-qty-wrapper {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-pill);
+  background-color: var(--bg-card);
+}
+
+.details-qty-btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  transition: var(--transition);
+}
+
+.details-qty-btn:hover {
+  color: var(--primary);
+  background-color: var(--primary-light);
+}
+
+.details-qty-input {
+  width: 44px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.details-add-btn {
+  flex: 1;
+}
+
+/* Related Dishes */
+.related-dishes-section {
+  padding-top: 3.5rem;
+  border-top: 1px solid var(--border-light);
+}

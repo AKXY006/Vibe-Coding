@@ -1,0 +1,265 @@
+/* src/pages/About.css */
+
+.about-page {
+  padding-bottom: 5rem;
+}
+
+.about-hero {
+  background: radial-gradient(circle at 50% 20%, rgba(255, 243, 224, 0.7) 0%, rgba(252, 251, 249, 1) 100%);
+  padding: 5rem 0 4rem 0;
+  text-align: center;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.about-hero-title {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  font-family: var(--font-serif);
+}
+
+.about-hero-desc {
+  max-width: 680px;
+  margin: 0 auto;
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Story Section */
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  align-items: center;
+  gap: 4rem;
+}
+
+.story-image-card {
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+
+.story-image {
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+}
+
+.story-float-card {
+  position: absolute;
+  bottom: 2rem;
+  right: -1rem;
+  background-color: var(--dark-bg);
+  color: #ffffff;
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  max-width: 240px;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--dark-border);
+}
+
+.story-float-number {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--primary);
+  font-family: var(--font-serif);
+}
+
+/* Values Grid */
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.value-card {
+  background-color: var(--bg-card);
+  padding: 2.5rem 2rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.value-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(230, 81, 0, 0.3);
+  box-shadow: var(--shadow-lg);
+}
+
+.value-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background-color: var(--primary-light);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.value-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Chefs Section */
+.chefs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+}
+
+.chef-card {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+  transition: var(--transition);
+}
+
+.chef-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-xl);
+}
+
+.chef-img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.chef-card:hover .chef-img {
+  transform: scale(1.04);
+}
+
+.chef-body {
+  padding: 1.5rem;
+}
+
+.chef-role {
+  color: var(--primary);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.chef-name {
+  font-size: 1.35rem;
+  margin: 0.25rem 0 0.75rem 0;
+  font-family: var(--font-serif);
+}
+
+.chef-bio {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Stats Row */
+.stats-banner {
+  background-color: var(--dark-bg);
+  color: #ffffff;
+  padding: 4rem 0;
+  margin: 4rem 0;
+  border-radius: var(--radius-xl);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-family: var(--font-serif);
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.95rem;
+  color: #94a3b8;
+}
+
+/* Gallery Grid */
+.ambiance-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.ambiance-card {
+  position: relative;
+  height: 260px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.ambiance-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.ambiance-card:hover .ambiance-img {
+  transform: scale(1.08);
+}
+
+.ambiance-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15, 23, 42, 0.8) 0%, transparent 60%);
+  display: flex;
+  align-items: flex-end;
+  padding: 1.5rem;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: var(--font-serif);
+}
+
+@media (max-width: 1024px) {
+  .story-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .story-float-card {
+    right: 1rem;
+  }
+  .values-grid {
+    grid-template-columns: 1fr;
+  }
+  .chefs-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+  }
+  .ambiance-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-hero-title {
+    font-size: 2.4rem;
+  }
+  .chefs-grid {
+    grid-template-columns: 1fr;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

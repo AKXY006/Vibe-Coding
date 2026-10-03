@@ -1,0 +1,206 @@
+/* src/pages/Contact.css */
+
+.contact-page {
+  padding-bottom: 5rem;
+}
+
+.contact-hero {
+  background: radial-gradient(circle at 50% 20%, rgba(255, 243, 224, 0.7) 0%, rgba(252, 251, 249, 1) 100%);
+  padding: 5rem 0 3.5rem 0;
+  text-align: center;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.contact-hero-title {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  font-family: var(--font-serif);
+}
+
+.contact-hero-desc {
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+}
+
+/* Contact Grid */
+.contact-layout-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1.35fr;
+  gap: 3.5rem;
+  align-items: start;
+}
+
+@media (max-width: 992px) {
+  .contact-layout-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+/* Contact Cards */
+.contact-cards-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contact-info-card {
+  background-color: var(--bg-card);
+  padding: 1.75rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  transition: var(--transition);
+}
+
+.contact-info-card:hover {
+  border-color: rgba(230, 81, 0, 0.3);
+  box-shadow: var(--shadow-md);
+}
+
+.contact-info-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background-color: var(--primary-light);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contact-info-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+  color: var(--text-primary);
+}
+
+.contact-info-val {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Contact Form Card */
+.contact-form-card {
+  background-color: var(--bg-card);
+  padding: 2.5rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-lg);
+}
+
+.contact-form-title {
+  font-size: 1.8rem;
+  font-family: var(--font-serif);
+  margin-bottom: 0.5rem;
+}
+
+.contact-form-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.contact-form-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Map Simulation Card */
+.map-simulation-card {
+  margin-top: 4rem;
+  background-color: var(--bg-card);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-md);
+  position: relative;
+}
+
+.map-mockup-frame {
+  height: 340px;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.map-grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.map-pin-pulse {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.map-pin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: #ffffff;
+  color: var(--text-primary);
+  padding: 0.85rem 1.5rem;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-xl);
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+}
+
+/* FAQs */
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.75rem;
+  margin-top: 3rem;
+}
+
+@media (max-width: 768px) {
+  .contact-hero-title {
+    font-size: 2.35rem;
+  }
+  .contact-form-card {
+    padding: 1.75rem;
+  }
+  .faq-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.faq-card {
+  background-color: var(--bg-card);
+  padding: 1.75rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+}
+
+.faq-card h4 {
+  font-size: 1.1rem;
+  font-family: var(--font-sans);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.faq-card p {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
